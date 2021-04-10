@@ -1,0 +1,5 @@
+/venv/
+__pycache__
+*.pyc
+*.sqlite3
+/EdAider backend test task code.zip
