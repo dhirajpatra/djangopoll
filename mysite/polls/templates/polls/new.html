@@ -1,0 +1,17 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+<h1>New Question</h1>
+<form method="POST" class="post-form" enctype="multipart/form-data">
+    {% csrf_token %}
+    <small>{{ msg }}<small>
+    {{ question_form.as_p }}
+    <hr>
+    <small>at least one or max 10 chioce</small>
+    {{ formset.as_p }}
+    <button type="submit" class="save btn btn-default">Save</button>
+</form>
+<div>
+    <h4><a href="/">Back</a></h4>
+</div>
+{% endblock %}
