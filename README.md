@@ -16,6 +16,7 @@ The system should store an IP address of a user that created a question.
 ### No double voting
 
 Users shouldn't be able to vote several times for the same question.
+As a user, I'd like to see the available questions even if I have already voted.
 No sophisticated measures and checks are needed.
 Just if I voted I shouldn't see the vote option for that question.
 
@@ -26,8 +27,7 @@ So everything (e.g., see questions, create new, vote, etc) can be done without t
 
 ### Tests & code style
 
-Go to `cd mysite`
-The question creation covered by automated tests, which run by `python manage.py test`.
+The question creation covered by automated tests, which run by `make test`.
 The code followed PEP 8.
 The linting run by `make lint`.
 

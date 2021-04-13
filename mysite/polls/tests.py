@@ -157,19 +157,6 @@ class QuestionDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
 
-    def test_past_question_which_already_voted(self):
-        """
-        The question will not be displayed to the same IP/user
-        if IP/user already voted for the same question.
-        """
-        ip = "127.0.0.1"
-        past_question = create_question(["good choice"], question_text='Past Question.', days=-5)
-        vote(ip, past_question)
-        response = Question.objects.exclude(user__ip_address=ip).filter(
-                    pub_date__lte=timezone.now()
-                ).order_by('-pub_date')[:5]
-        self.assertQuerysetEqual(response, [])
-
 
 class VoteTest(TestCase):
 
@@ -181,11 +168,26 @@ class VoteTest(TestCase):
         response = vote("127.0.0.1", question)
         self.assertEqual(response, True)
 
+    def test_vote_question_user_already_voted(self):
+        """
+        The question will not be voted for to the same IP/user
+        if IP/user already voted for the same question.
+        """
+        ip = "127.0.0.1"
+        question = create_question(["good choice"], question_text='Current Question.', days=-1)
+        response = vote(ip, question)
+        # again trying to vote
+        response = vote(ip, question)
+        self.assertEqual(response, False)
+
 
 def vote(ip, question):
     """vote on question and udpate the IP address for that user voted"""
-    selected_choice = question.choice_set.get(pk=question.id)
-    selected_choice.votes += 1
-    selected_choice.save()
-    User.objects.create(question=question, ip_address=ip)
-    return True
+    already_voted = User.objects.filter(question_id=question.id)
+    if not already_voted:
+        selected_choice = question.choice_set.get(pk=question.id)
+        selected_choice.votes += 1
+        selected_choice.save()
+        User.objects.create(question=question, ip_address=ip)
+        return True
+    return False

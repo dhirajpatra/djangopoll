@@ -33,4 +33,4 @@ class User(models.Model):
     ip_address = models.CharField(max_length=20, default="0.0.0.0")
 
     def __str__(self):
-        return self.question + " " + self.ip_address
+        return str(self.id)
