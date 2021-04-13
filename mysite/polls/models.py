@@ -6,6 +6,7 @@ from django.utils import timezone
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
+    ip_address = models.CharField(max_length=20, default="0.0.0.0")
 
     def __str__(self):
         return self.question_text
@@ -25,3 +26,11 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+
+class User(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    ip_address = models.CharField(max_length=20, default="0.0.0.0")
+
+    def __str__(self):
+        return str(self.id)

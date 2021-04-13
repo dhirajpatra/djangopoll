@@ -1,0 +1,35 @@
+{% load static %}
+<html>
+
+<head>
+    <title>Poll</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+</head>
+
+<body>
+    <div class="page-header">
+        <div class="top-menu" style="float:right">
+            {% if user.is_authenticated %}
+             <a href="/admin/">{{ request.user }}</a> | <a href="/admin/logout?next=/">Log out</a>
+            {% else %}
+                <a href="/admin/login/?next=/">Log in</a>
+            {% endif %} | 
+            <a href="/">Questions</a> |
+            <a href="{% url 'polls:new' %}" class="top-menu">Create New</a>
+        </div>
+        <h1><a href="/">Poll</a></h1>
+    </div>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
